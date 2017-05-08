@@ -35,7 +35,7 @@ TWN *ctwl_insert_left(CTWL* list, float val){
 	TWN *value;
 	list = malloc(sizeof(CTWL *));
 	value->data = val;
-	list->cur->prev = value->prev;
+	list->cur->prev = value;
 	free(list);	
 	
 	return value;
@@ -45,7 +45,7 @@ TWN *ctwl_insert_right(CTWL* list, float val){
 	TWN *value;
 	list = malloc(sizeof(CTWL *));
 	value->data = val;
-	list->cur->next = value->next;
+	list->cur->next = value;
 	free(list);	
 	
 	return value;
