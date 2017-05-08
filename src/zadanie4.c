@@ -32,36 +32,40 @@ void ctwl_cur_step_left(CTWL *list) {
 };
 
 TWN *ctwl_insert_left(CTWL* list, float val){
+	TWN *value;
 	list = malloc(sizeof(CTWL *));
-	ctwl_cur_step_left(list);
-	list->cur->data = val;
+	value->data = val;
+	list->cur->prev = value->prev;
 	free(list);	
 	
-	//return list->cur->data = val;
+	return value;
 };
 
 TWN *ctwl_insert_right(CTWL* list, float val){
+	TWN *value;
 	list = malloc(sizeof(CTWL *));
-	list->cur = list->cur->next;
-	list->cur->data = val;
+	value->data = val;
+	list->cur->next = value->next;
 	free(list);	
+	
+	return value;
 };
 
-CTWL *ctwl_create_random(unsigned int size) {
-	unsigned int i, tmp;
-	float rnd;
-	CTWL *random_ctwl = malloc(sizeof(CTWL *));
-	
-	for(i = 0; i < size; i++) {
-		rnd = rand() % 20;
-		random_ctwl->cur->data = rnd;
-		tmp = random_ctwl->cur->next;
-		random_ctwl->cur->next = tmp + i;
-	}
-	free(random_ctwl);
-	
-	return random_ctwl;
-};
+//CTWL *ctwl_create_random(unsigned int size) {
+//	unsigned int i, tmp;
+//	float rnd;
+//	CTWL *random_ctwl = malloc(sizeof(CTWL *));
+//	
+//	for(i = 0; i < size; i++) {
+//		rnd = rand() % 20;
+//		random_ctwl->cur->data = rnd;
+//		tmp = random_ctwl->cur->next;
+//		random_ctwl->cur->next = tmp + i;
+//	}
+//	free(random_ctwl);
+//	
+//	return random_ctwl;
+//};
 
 void ctwl_print(CTWL *list) {
 	int i;
