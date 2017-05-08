@@ -12,16 +12,24 @@ typedef struct {
 }CTWL;
 
 CTWL *ctwl_create_empty(void) {	
-	CTWL* start = malloc(sizeof(*start));
+	CTWL *start = malloc(sizeof(*start));
 	start->cur = NULL;
 	free(start);
 	
 	return start;
 };
 
+void ctwl_cur_step_right(CTWL *list){
+	
+	list = malloc(sizeof(*list));
+	
+	free(list);
+};
+
 CTWL *ctwl_create_random(unsigned int size) {
-	unsigned int i, rnd, tmp;
-	CTWL* random_ctwl = malloc(sizeof(*random_ctwl));
+	unsigned int i, tmp;
+	float rnd;
+	CTWL *random_ctwl = malloc(sizeof(*random_ctwl));
 	
 	for(i = 0; i < size; i++) {
 		rnd = rand() % 20;
@@ -34,12 +42,18 @@ CTWL *ctwl_create_random(unsigned int size) {
 	return random_ctwl;
 };
 
+void ctwl_print(CTWL *list) {
+	int i;
+	
+};
+
+
 int main() {
 	srand(time(NULL));
 	unsigned int size = 10;
 	
 	CTWL *ctwl_create_empty(void);
-	CTWL *Cctwl_create_random(size);
+	CTWL *ctwl_create_random(size);
 	
 	return 0;
 }
