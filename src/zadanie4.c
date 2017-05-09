@@ -48,28 +48,27 @@ TWN *ctwl_insert_right(CTWL* list, float val){
 	return value;
 }
 
-//CTWL *ctwl_create_random(unsigned int size) {
-//	unsigned int i, tmp;
-//	float rnd;
-//	CTWL *random_ctwl;
-//	random_ctwl = (CTWL *)malloc(sizeof(CTWL));
-//	
-//	for(i = 0; i < size; i++) {
-//		rnd = rand() % 20;
-//		random_ctwl->cur->data = rnd;
-//		tmp = random_ctwl->cur->next;
-//		random_ctwl->cur->next = tmp + i;
-//	}
-//	
-//	return random_ctwl;
-//};
+CTWL *ctwl_create_random(unsigned int size) {
+	unsigned int i;
+	float rnd;
+	CTWL *random_ctwl;
+	random_ctwl = (CTWL *)malloc(sizeof(CTWL));
+	
+	for(i = 0; i < size; i++) {
+		rnd = rand() % 20;
+		random_ctwl->cur->data = rnd;
+		random_ctwl->cur = random_ctwl->cur->next;
+	}
+	
+	return random_ctwl;
+}
 
 void ctwl_print(CTWL *list) {
 	TWN *start = list->cur;
     if (start == NULL) {
         printf("List is empty\n");
         return;
-    } else{	
+    } else {	
 		do {
 			printf("%f\n", list->cur->data);
 			list->cur = list->cur->next;
@@ -79,11 +78,15 @@ void ctwl_print(CTWL *list) {
 
 
 int main() {
-//	srand(time(NULL));
-//	unsigned int size = 10;
-//	CTWL *test;
+	srand(time(NULL));
+	unsigned int size = 10;
+	CTWL *test;
 	
-	CTWL *empty_list = ctwl_create_empty();
-    ctwl_print(empty_list);
+//	CTWL *empty_list = ctwl_create_empty();
+//  ctwl_print(empty_list);
+    
+    test = ctwl_create_random(size);
+    ctwl_print(test);
+
 	return 0;
 }
