@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 typedef struct TWN{
 	float data;
@@ -12,44 +13,45 @@ typedef struct {
 }CTWL;
 
 CTWL *ctwl_create_empty(void) {	
-	CTWL *start = malloc(sizeof(CTWL *));
+	CTWL *start;
+	start = (CTWL *)malloc(sizeof(CTWL));
 	start->cur = NULL;
 	free(start);
 	
 	return start;
-};
+}
 
 void ctwl_cur_step_right(CTWL *list){
-	list = malloc(sizeof(CTWL *));
+	list = (CTWL *)malloc(sizeof(CTWL));
 	list->cur = list->cur->next;
 	free(list);
-};
+}
 
 void ctwl_cur_step_left(CTWL *list) {
-	list = malloc(sizeof(CTWL *));
+	list = (CTWL *)malloc(sizeof(CTWL));
 	list->cur = list->cur->prev;
 	free(list);
-};
+}
 
 TWN *ctwl_insert_left(CTWL* list, float val){
 	TWN *value;
-	list = malloc(sizeof(CTWL *));
+	list = (CTWL *)malloc(sizeof(CTWL));
 	value->data = val;
 	list->cur->prev = value;
 	free(list);	
 	
 	return value;
-};
+}
 
 TWN *ctwl_insert_right(CTWL* list, float val){
 	TWN *value;
-	list = malloc(sizeof(CTWL *));
+	list = (CTWL *)malloc(sizeof(CTWL));
 	value->data = val;
 	list->cur->next = value;
 	free(list);	
 	
 	return value;
-};
+}
 
 //CTWL *ctwl_create_random(unsigned int size) {
 //	unsigned int i, tmp;
@@ -68,17 +70,19 @@ TWN *ctwl_insert_right(CTWL* list, float val){
 //};
 
 void ctwl_print(CTWL *list) {
-	int i;
-	
-};
+	CTWL *point = list;
+	do {
+		printf("%f", point->cur->data);
+		point->cur = point->cur->next;
+	} while(point != list);
+}
 
 
 int main() {
 	srand(time(NULL));
 	unsigned int size = 10;
 	
-	CTWL *ctwl_create_empty(void);
-	CTWL *ctwl_create_random(size);
+	ctwl_create_empty();
 	
 	return 0;
 }
