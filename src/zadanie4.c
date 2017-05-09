@@ -65,14 +65,15 @@ TWN *ctwl_insert_right(CTWL* list, float val){
 //};
 
 void ctwl_print(CTWL *list) {
-	CTWL *point;
-	if(list != NULL) {
+	TWN *start = list->cur;
+    if (start == NULL) {
+        printf("List is empty\n");
+        return;
+    } else{	
 		do {
-			printf("%f\n", point->cur->data);
-			point->cur = point->cur->next;
-		} while(point != list);
-	} else {
-		printf("List is empty");
+			printf("%f\n", list->cur->data);
+			list->cur = list->cur->next;
+		} while(list->cur != start);
 	}
 }
 
