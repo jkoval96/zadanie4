@@ -38,6 +38,7 @@ TWN *ctwl_insert_left(CTWL* list, float val){
 	element = (TWN *)malloc(sizeof(TWN));
 	element->data = val;
 	list->cur->prev = element;
+	element->next = list->cur;
 	
 	return element;
 }
@@ -47,6 +48,7 @@ TWN *ctwl_insert_right(CTWL* list, float val){
 	element = (TWN *)malloc(sizeof(TWN));
 	element->data = val;
 	list->cur->next = element;
+	element->prev = list->cur;
 		
 	return element;
 }
@@ -62,9 +64,14 @@ CTWL *ctwl_create_random(unsigned int size) {
 
 	random_ctwl->cur = element;
 	for(i = 0; i < size; i++) {
-		element = (TWN *)malloc(sizeof(TWN));
-		rnd = rand() % 20;
-		random_ctwl->cur = ctwl_insert_right(random_ctwl, rnd);	
+		if (size == 0) {
+			random_ctwl = ctwl_create_empty();
+			printf("Returned empty list");
+			return;
+		} else {
+			rnd = rand() % 20;
+			random_ctwl->cur = ctwl_insert_right(random_ctwl, rnd);	
+		}
 	}
 	return random_ctwl;
 }
