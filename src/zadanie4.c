@@ -35,20 +35,24 @@ void ctwl_cur_step_left(CTWL *list) {
 
 TWN *ctwl_insert_left(CTWL* list, float val){
 	TWN *element;
+	TWN *save = list->cur->prev;
 	element = (TWN *)malloc(sizeof(TWN));
 	element->data = val;
 	list->cur->prev = element;
 	element->next = list->cur;
+	element->prev = save->prev;
 	
 	return element;
 }
 
 TWN *ctwl_insert_right(CTWL* list, float val){
 	TWN *element;
+	TWN *save = list->cur->next;
 	element = (TWN *)malloc(sizeof(TWN));
 	element->data = val;
 	list->cur->next = element;
 	element->prev = list->cur;
+	element->next = save->next;
 		
 	return element;
 }
