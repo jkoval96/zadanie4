@@ -67,10 +67,14 @@ CTWL *ctwl_create_random(unsigned int size) {
 		
 	element = (TWN *)malloc(sizeof(TWN));
 	random_ctwl = (CTWL *)malloc(sizeof(CTWL));
-
+	
+	element->prev = element;
+	element->next = element;
 	random_ctwl->cur = element;
-	for(i = 0; i < size; i++) {		
+	
+	for(i = 1; i < size; i++) {		
 		rnd = rand() % 20;
+		element->data = rnd;	
 		random_ctwl->cur = ctwl_insert_right(random_ctwl, rnd);	
 	}
 	return random_ctwl;
