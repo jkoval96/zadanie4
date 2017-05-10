@@ -59,19 +59,15 @@ CTWL *ctwl_create_random(unsigned int size) {
 	CTWL *random_ctwl;
 	TWN *element;
 	
+	if (size == 0) return ctwl_create_empty();
+		
 	element = (TWN *)malloc(sizeof(TWN));
 	random_ctwl = (CTWL *)malloc(sizeof(CTWL));
 
 	random_ctwl->cur = element;
-	for(i = 0; i < size; i++) {
-		if (size == 0) {
-			random_ctwl = ctwl_create_empty();
-			printf("Returned empty list");
-			return;
-		} else {
-			rnd = rand() % 20;
-			random_ctwl->cur = ctwl_insert_right(random_ctwl, rnd);	
-		}
+	for(i = 0; i < size; i++) {		
+		rnd = rand() % 20;
+		random_ctwl->cur = ctwl_insert_right(random_ctwl, rnd);	
 	}
 	return random_ctwl;
 }
