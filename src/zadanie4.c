@@ -21,7 +21,13 @@ CTWL *ctwl_create_empty(void) {
 }
 
 void ctwl_destroy(CTWL* list){
-	free(list);	
+	TWN * next, * start = list->cur;
+	
+	do {
+		next = list->cur->next;
+		free(list->cur);
+		list->cur = next;
+	} while (list->cur != start);
 }
 
 
@@ -38,9 +44,11 @@ TWN *ctwl_insert_left(CTWL* list, float val){
 	TWN *save = list->cur->prev;
 	element = (TWN *)malloc(sizeof(TWN));
 	element->data = val;
+	
 	list->cur->prev = element;
 	element->next = list->cur;
-	element->prev = save->prev;
+	element->prev = save;
+	save->next = element;
 	
 	return element;
 }
@@ -50,9 +58,11 @@ TWN *ctwl_insert_right(CTWL* list, float val){
 	TWN *save = list->cur->next;
 	element = (TWN *)malloc(sizeof(TWN));
 	element->data = val;
+	
 	list->cur->next = element;
 	element->prev = list->cur;
-	element->next = save->next;
+	element->next = save;
+	save->prev = element;
 		
 	return element;
 }
@@ -88,7 +98,7 @@ void ctwl_print(CTWL *list) {
     } else {	
 		do {
 			printf("%f\n", list->cur->data);
-			list->cur = list->cur->next;
+			ctwl_cur_step_right(list);
 		} while(list->cur != start);
 	}
 }
@@ -107,6 +117,7 @@ int main() {
     test = ctwl_create_empty();
     test = ctwl_create_random(size);
 	ctwl_print(test);
-
+	ctwl_destroy(test);
+	
 	return 0;
 }
