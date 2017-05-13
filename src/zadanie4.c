@@ -28,6 +28,10 @@ void ctwl_destroy(CTWL* list){
 		free(list->cur);
 		list->cur = next;
 	} while (list->cur != start);
+	list->cur = NULL;
+	list->cur->next = NULL;
+	list->cur->prev = NULL;
+	free(list);
 }
 
 
@@ -82,9 +86,10 @@ CTWL *ctwl_create_random(unsigned int size) {
 	element->next = element;
 	random_ctwl->cur = element;
 	
+	rnd = rand() % 20;
+	element->data = rnd;
 	for(i = 1; i < size; i++) {		
-		rnd = rand() % 20;
-		element->data = rnd;	
+		rnd = rand() % 20;	
 		random_ctwl->cur = ctwl_insert_right(random_ctwl, rnd);	
 	}
 	return random_ctwl;
@@ -103,51 +108,51 @@ void ctwl_print(CTWL *list) {
 	}
 }
 
-CTWL *ctwl_create_random_bimodal(unsigned int size) {
-	unsigned int i;
-	float rnd, prev, max;
-	CTWL * random_bimodal;
-	TWN * element;
-	
-	if (size <= 3) return ctwl_create_empty();
-	
-	element = (TWN *)malloc(sizeof(TWN));
-	random_bimodal = (CTWL *)malloc(sizeof(CTWL));
-	
-	element->prev = element;
-	element->next = element;
-	random_bimodal->cur = element;
-	
-	for(i = 0; i < size + 1; i++) {
-		if(i == 1) {
-			max = rand() % 100 + 100;
-			element->data = max;
-			prev = max;
-			random_bimodal->cur = ctwl_insert_right(random_bimodal, max);
-		} else if(i != size - 2){
-			while(rnd < prev) {
-				rnd = rand() % 100;
-			}
-			element->data = rnd;
-			prev = rnd;
-			random_bimodal->cur = ctwl_insert_right(random_bimodal, rnd);
-		} else if(i == size - 2) {
-			max = rand() % 100 + 100;
-			element->data = max;
-			prev = max;
-			random_bimodal->cur = ctwl_insert_right(random_bimodal, max);
-		} else if(i == size - 1){
-			while(rnd < prev) {
-				rnd = rand() % 100;
-			}
-			element->data = rnd;
-			prev = rnd;
-			random_bimodal->cur = ctwl_insert_right(random_bimodal, rnd);
-		}		
-	}
-	
-	return random_bimodal;
-}
+//CTWL *ctwl_create_random_bimodal(unsigned int size) {
+//	unsigned int i;
+//	float rnd, prev, max;
+//	CTWL * random_bimodal;
+//	TWN * element;
+//	
+//	if (size <= 3) return ctwl_create_empty();
+//	
+//	element = (TWN *)malloc(sizeof(TWN));
+//	random_bimodal = (CTWL *)malloc(sizeof(CTWL));
+//	
+//	element->prev = element;
+//	element->next = element;
+//	random_bimodal->cur = element;
+//	
+//	for(i = 1; i < size; i++) {
+//		if(i == 1) {
+//			max = rand() % 100;
+//			element->data = max;
+//			prev = max;
+//			random_bimodal->cur = ctwl_insert_right(random_bimodal, max);
+//		} else if(i != size - 2){
+//			while(rnd < prev) {
+//				rnd = rand() % 100;
+//			}
+//			element->data = rnd;
+//			prev = rnd;
+//			random_bimodal->cur = ctwl_insert_right(random_bimodal, rnd);
+//		} else if(i == size - 2) {
+//			max = rand() % 100;
+//			element->data = max;
+//			prev = max;
+//			random_bimodal->cur = ctwl_insert_right(random_bimodal, max);
+//		} else if(i == size - 1){
+//			while(rnd < prev) {
+//				rnd = rand() % 100;
+//			}
+//			element->data = rnd;
+//			prev = rnd;
+//			random_bimodal->cur = ctwl_insert_right(random_bimodal, rnd);
+//		}		
+//	}
+//	
+//	return random_bimodal;
+//}
 
 int main() {
 	srand(time(NULL));
@@ -155,19 +160,20 @@ int main() {
 	CTWL * test;
 	
 //	CTWL *empty_list = ctwl_create_empty();
-//  ctwl_print(empty_list);
-  	
-  	//ctwl_destroy(empty_list);
+//  	ctwl_print(empty_list);
+//  	
+//  	ctwl_destroy(empty_list);
     
-//    test = ctwl_create_empty();
-//    test = ctwl_create_random(size);
-//	ctwl_print(test);
-//	ctwl_destroy(test);
-//	printf("\n");
-//	ctwl_print(test);
-
-	test = ctwl_create_empty();
-	test = ctwl_create_random_bimodal(size);
+    test = ctwl_create_empty();
+    test = ctwl_create_random(size);
 	ctwl_print(test);
+	
+	ctwl_destroy(test);
+	printf("\n");
+	ctwl_print(test);
+
+//	test = ctwl_create_empty();
+//	test = ctwl_create_random_bimodal(size);
+//	ctwl_print(test);
 	return 0;
 }
