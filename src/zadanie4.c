@@ -162,7 +162,7 @@ CTWL * ctwl_create_random_unimodal(unsigned int size) {
 	unsigned int i;
 	float rnd, cur;
 	CTWL * random_uni;
-	TWN * element;
+	TWN * element, * value;
 	
 	if (size == 0) return ctwl_create_empty();
 		
@@ -177,11 +177,17 @@ CTWL * ctwl_create_random_unimodal(unsigned int size) {
 	element->data = rnd;
 	
 	for(i = 1; i < size; i++) {		
-		rnd = rand() % 20 + rnd;
+		rnd = rand() % 20 + rnd + 1;
 		random_uni->cur = ctwl_insert_right(random_uni, rnd);	
+		if(i == 3) {
+			value = random_uni->cur->prev;
+			random_uni->cur->prev->data = random_uni->cur->data;
+			random_uni->cur->data = value->data;
+		}
 	}
 	return random_uni;
 }
+
 int main() {
 	srand(time(NULL));
 	unsigned int size = 10;
