@@ -70,8 +70,8 @@ TWN *ctwl_insert_right(CTWL* list, float val){
 CTWL *ctwl_create_random(unsigned int size) {
 	unsigned int i;
 	float rnd;
-	CTWL *random_ctwl;
-	TWN *element;
+	CTWL * random_ctwl;
+	TWN * element;
 	
 	if (size == 0) return ctwl_create_empty();
 		
@@ -91,7 +91,7 @@ CTWL *ctwl_create_random(unsigned int size) {
 }
 
 void ctwl_print(CTWL *list) {
-	TWN *start = list->cur;
+	TWN * start = list->cur;
     if (start == NULL) {
         printf("List is empty\n");
         return;
@@ -105,9 +105,9 @@ void ctwl_print(CTWL *list) {
 
 CTWL *ctwl_create_random_bimodal(unsigned int size) {
 	unsigned int i;
-	float rnd;
-	CTWL *random_bimodal;
-	TWN *element, *start;
+	float rnd, prev, max;
+	CTWL * random_bimodal;
+	TWN * element;
 	
 	if (size <= 3) return ctwl_create_empty();
 	
@@ -117,19 +117,33 @@ CTWL *ctwl_create_random_bimodal(unsigned int size) {
 	element->prev = element;
 	element->next = element;
 	random_bimodal->cur = element;
-	start = random_bimodal->cur;
 	
-	for(i = 1; i < size; i++) {
-		rnd = rand() % 20;
+	for(i = 0; i < size + 1; i++) {
 		if(i == 1) {
-			rnd = 1000;
+			max = rand() % 100 + 100;
+			element->data = max;
+			prev = max;
+			random_bimodal->cur = ctwl_insert_right(random_bimodal, max);
+		} else if(i != size - 2){
+			while(rnd < prev) {
+				rnd = rand() % 100;
+			}
 			element->data = rnd;
+			prev = rnd;
 			random_bimodal->cur = ctwl_insert_right(random_bimodal, rnd);
-			random_bimodal->cur = ctwl_insert_left(random_bimodal, rnd);
-		}
-		rnd = rand() % 20;
-		element->data = rnd;
-		random_bimodal->cur = ctwl_insert_right(random_bimodal, rnd);
+		} else if(i == size - 2) {
+			max = rand() % 100 + 100;
+			element->data = max;
+			prev = max;
+			random_bimodal->cur = ctwl_insert_right(random_bimodal, max);
+		} else if(i == size - 1){
+			while(rnd < prev) {
+				rnd = rand() % 100;
+			}
+			element->data = rnd;
+			prev = rnd;
+			random_bimodal->cur = ctwl_insert_right(random_bimodal, rnd);
+		}		
 	}
 	
 	return random_bimodal;
@@ -138,19 +152,22 @@ CTWL *ctwl_create_random_bimodal(unsigned int size) {
 int main() {
 	srand(time(NULL));
 	unsigned int size = 10;
-	CTWL *test;
+	CTWL * test;
 	
 //	CTWL *empty_list = ctwl_create_empty();
 //  ctwl_print(empty_list);
   	
   	//ctwl_destroy(empty_list);
     
-    test = ctwl_create_empty();
-    test = ctwl_create_random(size);
+//    test = ctwl_create_empty();
+//    test = ctwl_create_random(size);
+//	ctwl_print(test);
+//	ctwl_destroy(test);
+//	printf("\n");
+//	ctwl_print(test);
+
+	test = ctwl_create_empty();
+	test = ctwl_create_random_bimodal(size);
 	ctwl_print(test);
-	ctwl_destroy(test);
-	printf("\n");
-	ctwl_print(test);
-	
 	return 0;
 }
