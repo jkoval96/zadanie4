@@ -159,10 +159,10 @@ CTWL *ctwl_create_random_bimodal(unsigned int size) {
 }
 
 CTWL * ctwl_create_random_unimodal(unsigned int size) {
-	unsigned int i;
-	float rnd, cur;
+	unsigned int i, j;
+	float rnd, value;
 	CTWL * random_uni;
-	TWN * element, * value;
+	TWN * element;
 	
 	if (size == 0) return ctwl_create_empty();
 		
@@ -179,10 +179,11 @@ CTWL * ctwl_create_random_unimodal(unsigned int size) {
 	for(i = 1; i < size; i++) {		
 		rnd = rand() % 20 + rnd + 1;
 		random_uni->cur = ctwl_insert_right(random_uni, rnd);	
-		if(i == 3) {
-			value = random_uni->cur->prev;
+		j = rand() % (size - 1) + 2;
+		if(i == j) {
+			value = random_uni->cur->prev->data;
 			random_uni->cur->prev->data = random_uni->cur->data;
-			random_uni->cur->data = value->data;
+			random_uni->cur->data = value;
 		}
 	}
 	return random_uni;
@@ -190,7 +191,7 @@ CTWL * ctwl_create_random_unimodal(unsigned int size) {
 
 int main() {
 	srand(time(NULL));
-	unsigned int size = 10;
+	unsigned int size = 20;
 	CTWL * test;
 	
 //	CTWL *empty_list = ctwl_create_empty();
