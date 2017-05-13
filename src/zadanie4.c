@@ -22,15 +22,15 @@ CTWL *ctwl_create_empty(void) {
 
 void ctwl_destroy(CTWL* list){
 	TWN * next, * start = list->cur;
-	
+	if (list == 0) {
+		printf("List is already empty");
+	}
 	do {
 		next = list->cur->next;
 		free(list->cur);
 		list->cur = next;
 	} while (list->cur != start);
 	list->cur = NULL;
-	list->cur->next = NULL;
-	list->cur->prev = NULL;
 	free(list);
 }
 
@@ -97,6 +97,10 @@ CTWL *ctwl_create_random(unsigned int size) {
 
 void ctwl_print(CTWL *list) {
 	TWN * start = list->cur;
+	if (list == 0) {
+		printf("List is empty\n");
+        return;
+	}
     if (start == NULL) {
         printf("List is empty\n");
         return;
