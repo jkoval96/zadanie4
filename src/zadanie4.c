@@ -119,47 +119,47 @@ void ctwl_print(CTWL *list) {
 }
 
 
-CTWL * ctwl_create_random_unimodal(unsigned int size) {
+CTWL * ctwl_create_random_bimodal(unsigned int size) {
 	unsigned int i, j;
 	float rnd, value;
-	CTWL * random_uni;
+	CTWL * random_bi;
 	TWN * element;
 	
 	if (size == 0) return ctwl_create_empty();
 	if (size < 4)  return ctwl_create_empty();
 		
 	element = (TWN *)malloc(sizeof(TWN));
-	random_uni = (CTWL *)malloc(sizeof(CTWL));
+	random_bi = (CTWL *)malloc(sizeof(CTWL));
 	
 	element->prev = element;
 	element->next = element;
-	random_uni->cur = element;	
+	random_bi->cur = element;	
 	
 	rnd = rand() % 20;
 	element->data = rnd;
 	if (size == 4) {
 		for(i = 1; i < size; i++) {
 			rnd = rand() % 20 + rnd + 1;
-			random_uni->cur = ctwl_insert_right(random_uni, rnd);
+			random_bi->cur = ctwl_insert_right(random_bi, rnd);
 			if (i == 2) {
-				value = random_uni->cur->prev->data;
-				random_uni->cur->prev->data = random_uni->cur->data;
-				random_uni->cur->data = value;
+				value = random_bi->cur->prev->data;
+				random_bi->cur->prev->data = random_bi->cur->data;
+				random_bi->cur->data = value;
 			}
 		}
 	 }else {
 		for(i = 1; i < size; i++) {		
 			rnd = rand() % 20 + rnd + 1;
-			random_uni->cur = ctwl_insert_right(random_uni, rnd);	
+			random_bi->cur = ctwl_insert_right(random_bi, rnd);	
 			j = rand() % (size - 1) + 2;
 			if (i == j) {
-				value = random_uni->cur->prev->data;
-				random_uni->cur->prev->data = random_uni->cur->data;
-				random_uni->cur->data = value;
+				value = random_bi->cur->prev->data;
+				random_bi->cur->prev->data = random_bi->cur->data;
+				random_bi->cur->data = value;
 			}
 		}
 	}
-	return random_uni;
+	return random_bi;
 }
 
 int main() {
@@ -181,7 +181,7 @@ int main() {
 //	ctwl_print(test);
 
 	test = ctwl_create_empty();
-	test = ctwl_create_random_unimodal(size);
+	test = ctwl_create_random_bimodal(size);
 	ctwl_print(test);
 	return 0;
 }
