@@ -104,11 +104,11 @@ void ctwl_print(CTWL *list) {
 	TWN * start = list->cur;
 	
 	if (list == 0) {
-		printf("List is empty\n");
+		printf("List is empty or could not be constructed\n");
         return;
 	}
     if (start == NULL) {
-        printf("List is empty\n");
+        printf("List is empty or could not be constructed\n");
         return;
     } else {	
 		do {
@@ -137,6 +137,8 @@ CTWL * ctwl_create_random_bimodal(unsigned int size) {
 	
 	rnd = rand() % 20;
 	element->data = rnd;
+	j = rand() % (size - 3) + 2;
+	
 	if (size == 4) {
 		for(i = 1; i < size; i++) {
 			rnd = rand() % 20 + rnd + 1;
@@ -151,7 +153,6 @@ CTWL * ctwl_create_random_bimodal(unsigned int size) {
 		for(i = 1; i < size; i++) {		
 			rnd = rand() % 20 + rnd + 1;
 			random_bi->cur = ctwl_insert_right(random_bi, rnd);	
-			j = rand() % (size - 1) + 2;
 			if (i == j) {
 				value = random_bi->cur->prev->data;
 				random_bi->cur->prev->data = random_bi->cur->data;
@@ -160,6 +161,27 @@ CTWL * ctwl_create_random_bimodal(unsigned int size) {
 		}
 	}
 	return random_bi;
+}
+
+char ctwl_delete(CTWL* list) {
+	CTWL * save;
+	char CTWL_OK, CTWL_FAIL;
+	save = (CTWL *)malloc(sizeof(CTWL));
+	if(list->cur != NULL) {
+		save->cur = list->cur;
+		list->cur = save->cur->next;
+		list->cur->prev = save->cur->prev;
+		save->cur->prev->next = list->cur;
+		
+		save->cur = NULL;
+		
+		return CTWL_OK;
+	} else {
+		
+		return CTWL_FAIL;
+	}
+	
+	
 }
 
 int main() {
@@ -183,5 +205,9 @@ int main() {
 	test = ctwl_create_empty();
 	test = ctwl_create_random_bimodal(size);
 	ctwl_print(test);
+	ctwl_delete(test);
+	printf("\n");
+	ctwl_print(test);
+	
 	return 0;
 }
