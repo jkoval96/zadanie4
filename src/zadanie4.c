@@ -2,6 +2,9 @@
 #include <stdlib.h>
 #include <time.h>
 
+#define CTWL_OK 0
+#define CTWL_FAIL -1
+
 typedef struct TWN{
 	float data;
 	struct TWN *prev;
@@ -36,7 +39,6 @@ void ctwl_destroy(CTWL* list){
 	list->cur = NULL;
 	free(list);
 }
-
 
 void ctwl_cur_step_right(CTWL *list){
 	list->cur = list->cur->next;
@@ -165,7 +167,6 @@ CTWL * ctwl_create_random_bimodal(unsigned int size) {
 
 char ctwl_delete(CTWL* list) {
 	CTWL * save;
-	char CTWL_OK, CTWL_FAIL;
 	save = (CTWL *)malloc(sizeof(CTWL));
 	if(list->cur != NULL) {
 		save->cur = list->cur;
@@ -188,26 +189,10 @@ int main() {
 	srand(time(NULL));
 	unsigned int size = 10;
 	CTWL * test;
-	
-//	CTWL *empty_list = ctwl_create_empty();
-//  	ctwl_print(empty_list);
-//  	
-//  	ctwl_destroy(empty_list);
-    
-//    test = ctwl_create_empty();
-//    test = ctwl_create_random(size);
-//	ctwl_print(test);
-//	
-//	ctwl_destroy(test);
-//	printf("\n");
-//	ctwl_print(test);
 
 	test = ctwl_create_empty();
 	test = ctwl_create_random_bimodal(size);
 	ctwl_print(test);
-	ctwl_delete(test);
-	printf("\n");
-	ctwl_print(test);
-	
+
 	return 0;
 }
