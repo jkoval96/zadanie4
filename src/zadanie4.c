@@ -2,8 +2,8 @@
 #include <stdlib.h>
 #include <time.h>
 
-#define CTWL_OK 0
-#define CTWL_FAIL -1
+#define CTWL_OK 1
+#define CTWL_FAIL 0
 
 typedef struct TWN{
 	float data;
@@ -19,7 +19,11 @@ CTWL *ctwl_create_empty(void) {
 	CTWL *start;
 	
 	start = (CTWL *)malloc(sizeof(CTWL));
-	start->cur = NULL;
+	if(start) {
+		start->cur = NULL;
+	} else {
+		return 0;
+	}
 	
 	return start;
 }
@@ -27,25 +31,32 @@ CTWL *ctwl_create_empty(void) {
 void ctwl_destroy(CTWL* list){
 	TWN * next, * start = list->cur;
 	
-	if (list == 0) {
-		printf("List is already empty");
-	}
+	if (list == NULL) {
+		return;
+	} 
 	do {
 		next = list->cur->next;
 		free(list->cur);
 		list->cur = next;
 	} while (list->cur != start);
 	
-	list->cur = NULL;
 	free(list);
 }
 
 void ctwl_cur_step_right(CTWL *list){
-	list->cur = list->cur->next;
+	if(list == NULL) {
+		list->cur = NULL;
+	} else {
+		list->cur = list->cur->next;
+	}
 }
 
 void ctwl_cur_step_left(CTWL *list) {
-	list->cur = list->cur->prev;
+	if(list == NULL) {
+		list->cur = NULL;
+	} else {
+		list->cur = list->cur->prev;
+	}
 }
 
 TWN *ctwl_insert_left(CTWL* list, float val){
@@ -54,11 +65,20 @@ TWN *ctwl_insert_left(CTWL* list, float val){
 	
 	element = (TWN *)malloc(sizeof(TWN));
 	element->data = val;
+	element->next = element;
+	element->prev = element;
 	
-	list->cur->prev = element;
-	element->next = list->cur;
-	element->prev = save;
-	save->next = element;
+	if(list->cur == NULL) {
+		element->next = element;
+		element->prev = element;
+		list->cur = element;
+		return element;
+	} else {
+		list->cur->next = element;
+		element->next = list->cur;
+		element->prev = save;
+		save->next = element;
+	}
 	
 	return element;
 }
@@ -70,11 +90,17 @@ TWN *ctwl_insert_right(CTWL* list, float val){
 	element = (TWN *)malloc(sizeof(TWN));
 	element->data = val;
 	
-	list->cur->next = element;
-	element->prev = list->cur;
-	element->next = save;
-	save->prev = element;
-		
+	if(list->cur == NULL) {
+		element->next = element;
+		element->prev = element;
+		list->cur = element;
+		return element;
+	} else {
+		list->cur->next = element;
+		element->prev = list->cur;
+		element->next = save;
+		save->prev = element;
+	}
 	return element;
 }
 
@@ -82,20 +108,20 @@ CTWL *ctwl_create_random(unsigned int size) {
 	unsigned int i;
 	float rnd;
 	CTWL * random_ctwl;
-	TWN * element;
+//	TWN * element;
 	
-	if (size == 0) return ctwl_create_empty();
-		
-	element = (TWN *)malloc(sizeof(TWN));
+	if (size == 0) {
+		return ctwl_create_empty();
+	}	
+//	element = (TWN *)malloc(sizeof(TWN));
 	random_ctwl = (CTWL *)malloc(sizeof(CTWL));
-	
-	element->prev = element;
-	element->next = element;
-	random_ctwl->cur = element;
-	
-	rnd = rand() % 20;
-	element->data = rnd;
-	for(i = 1; i < size; i++) {		
+//	element->prev = element;
+//	element->next = element;
+//	random_ctwl->cur = element;
+//	
+//	rnd = rand() % 20;
+//	element->data = rnd;
+	for(i = 0; i < size; i++) {		
 		rnd = rand() % 20;	
 		random_ctwl->cur = ctwl_insert_right(random_ctwl, rnd);	
 	}
@@ -127,8 +153,9 @@ CTWL * ctwl_create_random_bimodal(unsigned int size) {
 	CTWL * random_bi;
 	TWN * element;
 	
-	if (size == 0) return ctwl_create_empty();
-	if (size < 4)  return ctwl_create_empty();
+	if (size < 4) {
+		return 0;
+	} 
 		
 	element = (TWN *)malloc(sizeof(TWN));
 	random_bi = (CTWL *)malloc(sizeof(CTWL));
@@ -175,7 +202,7 @@ char ctwl_delete(CTWL* list) {
 		save->cur->prev->next = list->cur;
 		
 		save->cur = NULL;
-		
+		free(save);
 		return CTWL_OK;
 	} else {
 		
@@ -188,11 +215,15 @@ char ctwl_delete(CTWL* list) {
 int main() {
 	srand(time(NULL));
 	unsigned int size = 10;
-	CTWL * test;
+	CTWL * test, * test2;
 
-	test = ctwl_create_empty();
-	test = ctwl_create_random_bimodal(size);
-	ctwl_print(test);
-
+//	test = ctwl_create_empty();
+//	test = ctwl_create_random_bimodal(size);
+//	ctwl_print(test);
+	
+	test2 = ctwl_create_empty();
+	test2->cur = ctwl_insert_right(test2,10);
+	//test2 = ctwl_create_random(10);
+	ctwl_print(test2);
 	return 0;
 }
