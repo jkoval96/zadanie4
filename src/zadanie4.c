@@ -46,6 +46,8 @@ void ctwl_destroy(CTWL* list){
 void ctwl_cur_step_right(CTWL *list){
 	if(list == NULL) {
 		list->cur = NULL;
+	} else if(list->cur == NULL) {
+		return;
 	} else {
 		list->cur = list->cur->next;
 	}
@@ -54,6 +56,8 @@ void ctwl_cur_step_right(CTWL *list){
 void ctwl_cur_step_left(CTWL *list) {
 	if(list == NULL) {
 		list->cur = NULL;
+	} else if(list->cur == NULL) {
+		return;
 	} else {
 		list->cur = list->cur->prev;
 	}
@@ -73,7 +77,7 @@ TWN *ctwl_insert_left(CTWL* list, float val){
 		return element;
 	} else {
 		save = list->cur->prev;
-		list->cur->next = element;
+		list->cur->prev = element;
 		element->next = list->cur;
 		element->prev = save;
 		save->next = element;
@@ -178,20 +182,23 @@ CTWL * ctwl_create_random_bimodal(unsigned int size) {
 
 char ctwl_delete(CTWL* list) {
 	CTWL * save;
-	save = (CTWL *)malloc(sizeof(CTWL));
-	if(list->cur != NULL) {
+	
+	if(list->cur == list->cur->next) {
+		list->cur = NULL;
+		free(list->cur);
+		
+		return CTWL_OK;
+	} else if(list->cur != NULL) {
 		save->cur = list->cur;
 		list->cur = save->cur->next;
 		list->cur->prev = save->cur->prev;
 		save->cur->prev->next = list->cur;
 		
 		save->cur = NULL;
-		free(save);
+		free(save->cur);
 		
 		return CTWL_OK;
 	} else {
-		free(save);
-		
 		return CTWL_FAIL;
 	}
 	
