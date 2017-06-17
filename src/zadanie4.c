@@ -145,8 +145,8 @@ void ctwl_print(CTWL *list) {
 
 
 CTWL * ctwl_create_random_bimodal(unsigned int size) {
-	unsigned int i, j;
-	float rnd, value;
+	unsigned int i, x1, x2, x3;
+	float rnd, start, value;
 	CTWL * random_bi;
 	
 	if (size < 4) {
@@ -154,8 +154,24 @@ CTWL * ctwl_create_random_bimodal(unsigned int size) {
 	} 
 		
 	random_bi = ctwl_create_empty();
-	j = rand() % (size - 3) + 2;
-	
+	x1 = rand() % (size - 2);
+	if(x1 == 0) {
+		x2 = rand() % (size - 3) + 1;
+		x3 = x2 + rand() % (size - x2 - 2) + 1; 
+	} else if(x1 == size - 3){			
+		x2 = x1 + 1;
+		x3 = x2 + 1; 
+	} else {
+		x2 = x1 + rand() % (size - x1 - 2) + 1;
+		if(x2 == size - 2) {
+			x3 = x2 + 1;
+		} else {
+			x3 = x2 + rand() % (size - x2 - 2) + 1;
+		}
+	}
+	rnd = rand() % 20;
+	start = rnd;
+
 	if (size == 4) {
 		for(i = 0; i < size; i++) {
 			rnd = rand() % 20 + rnd + 1;
@@ -166,17 +182,49 @@ CTWL * ctwl_create_random_bimodal(unsigned int size) {
 				random_bi->cur->data = value;
 			}
 		}
-	 }else {
-		for(i = 0; i < size; i++) {		
-			rnd = rand() % 20 + rnd + 1;
-			random_bi->cur = ctwl_insert_right(random_bi, rnd);	
-			if (i == j) {
-				value = random_bi->cur->prev->data;
-				random_bi->cur->prev->data = random_bi->cur->data;
-				random_bi->cur->data = value;
+	 } else { 
+		if(x1 == 0) {
+			start = rnd;
+			random_bi->cur = ctwl_insert_right(random_bi, rnd);
+			
+			for(i = x1; i < x2; i++) {
+				rnd = rnd - 1;
+				random_bi->cur = ctwl_insert_right(random_bi, rnd);
+			}
+			for(i = x2; i < x3; i++) {
+				rnd = rnd + 1;
+				random_bi->cur = ctwl_insert_right(random_bi, rnd);
+			}
+			for(i = x3; i < size - 1; i++) {
+				rnd = rnd - 1;
+				if((i == size - 2) && (rnd >= start)) {
+					rnd = start - 1;
+				}
+				random_bi->cur = ctwl_insert_right(random_bi, rnd);
+			}
+		} else {
+			for(i = 0; i < x1; i++) {
+				rnd = rnd + 1;
+				random_bi->cur = ctwl_insert_right(random_bi, rnd);
+			}
+			for(i = x1; i < x2; i++) {
+				rnd = rnd - 1;
+				random_bi->cur = ctwl_insert_right(random_bi, rnd);
+			}
+			for(i = x2; i < x3; i++) {
+				rnd = rnd + 1;
+				random_bi->cur = ctwl_insert_right(random_bi, rnd);
+			}
+			for(i = x3; i < size; i++) {
+				rnd = rnd - 1;
+				if((i == size - 1) && (rnd >= start)) {
+					rnd = start - 1;
+				}
+				random_bi->cur = ctwl_insert_right(random_bi, rnd);
 			}
 		}
 	}
+
 	return random_bi;
 }
 
