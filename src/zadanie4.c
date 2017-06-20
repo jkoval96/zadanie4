@@ -45,7 +45,7 @@ void ctwl_destroy(CTWL* list){
 
 void ctwl_cur_step_right(CTWL *list){
 	if(list == NULL) {
-		list->cur = NULL;
+		return;
 	} else if(list->cur == NULL) {
 		return;
 	} else {
@@ -55,7 +55,7 @@ void ctwl_cur_step_right(CTWL *list){
 
 void ctwl_cur_step_left(CTWL *list) {
 	if(list == NULL) {
-		list->cur = NULL;
+		return;
 	} else if(list->cur == NULL) {
 		return;
 	} else {
@@ -146,7 +146,7 @@ void ctwl_print(CTWL *list) {
 
 CTWL * ctwl_create_random_bimodal(unsigned int size) {
 	unsigned int i, x1, x2, x3;
-	float rnd, start, value;
+	float rnd, start, value, step;
 	CTWL * random_bi;
 	
 	if (size < 4) {
@@ -171,7 +171,7 @@ CTWL * ctwl_create_random_bimodal(unsigned int size) {
 	}
 	rnd = rand() % 20;
 	start = rnd;
-
+	step = rand() % 10 + 1;
 	if (size == 4) {
 		for(i = 0; i < size; i++) {
 			rnd = rand() % 20 + rnd + 1;
@@ -188,15 +188,15 @@ CTWL * ctwl_create_random_bimodal(unsigned int size) {
 			random_bi->cur = ctwl_insert_right(random_bi, rnd);
 			
 			for(i = x1; i < x2; i++) {
-				rnd = rnd - 1;
+				rnd = rnd - step;
 				random_bi->cur = ctwl_insert_right(random_bi, rnd);
 			}
 			for(i = x2; i < x3; i++) {
-				rnd = rnd + 1;
+				rnd = rnd + step;
 				random_bi->cur = ctwl_insert_right(random_bi, rnd);
 			}
 			for(i = x3; i < size - 1; i++) {
-				rnd = rnd - 1;
+				rnd = rnd - step;
 				if((i == size - 2) && (rnd >= start)) {
 					rnd = start - 1;
 				}
@@ -204,21 +204,21 @@ CTWL * ctwl_create_random_bimodal(unsigned int size) {
 			}
 		} else {
 			for(i = 0; i < x1; i++) {
-				rnd = rnd + 1;
+				rnd = rnd + step;
 				random_bi->cur = ctwl_insert_right(random_bi, rnd);
 			}
 			for(i = x1; i < x2; i++) {
-				rnd = rnd - 1;
+				rnd = rnd - step;
 				random_bi->cur = ctwl_insert_right(random_bi, rnd);
 			}
 			for(i = x2; i < x3; i++) {
-				rnd = rnd + 1;
+				rnd = rnd + step;
 				random_bi->cur = ctwl_insert_right(random_bi, rnd);
 			}
 			for(i = x3; i < size; i++) {
 				rnd = rnd - 1;
 				if((i == size - 1) && (rnd >= start)) {
-					rnd = start - 1;
+					rnd = start - step;
 				}
 				random_bi->cur = ctwl_insert_right(random_bi, rnd);
 			}
@@ -242,8 +242,8 @@ char ctwl_delete(CTWL* list) {
 		list->cur->prev = save->cur->prev;
 		save->cur->prev->next = list->cur;
 		
-		save->cur = NULL;
 		free(save->cur);
+		save->cur = NULL;
 		
 		return CTWL_OK;
 	} else {
