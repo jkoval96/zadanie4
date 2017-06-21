@@ -171,7 +171,6 @@ CTWL * ctwl_create_random_bimodal(unsigned int size) {
 	}
 	rnd = rand() % 20;
 	start = rnd;
-	step = rand() % 10 + 1;
 	if (size == 4) {
 		for(i = 0; i < size; i++) {
 			rnd = rand() % 20 + rnd + 1;
@@ -188,14 +187,17 @@ CTWL * ctwl_create_random_bimodal(unsigned int size) {
 			random_bi->cur = ctwl_insert_right(random_bi, rnd);
 			
 			for(i = x1; i < x2; i++) {
+				step = rand() % 10 + 1;
 				rnd = rnd - step;
 				random_bi->cur = ctwl_insert_right(random_bi, rnd);
 			}
 			for(i = x2; i < x3; i++) {
+				step = rand() % 10 + 1;
 				rnd = rnd + step;
 				random_bi->cur = ctwl_insert_right(random_bi, rnd);
 			}
 			for(i = x3; i < size - 1; i++) {
+				step = rand() % 10 + 1;
 				rnd = rnd - step;
 				if((i == size - 2) && (rnd >= start)) {
 					rnd = start - 1;
@@ -204,18 +206,22 @@ CTWL * ctwl_create_random_bimodal(unsigned int size) {
 			}
 		} else {
 			for(i = 0; i < x1; i++) {
+				step = rand() % 10 + 1;
 				rnd = rnd + step;
 				random_bi->cur = ctwl_insert_right(random_bi, rnd);
 			}
 			for(i = x1; i < x2; i++) {
+				step = rand() % 10 + 1;
 				rnd = rnd - step;
 				random_bi->cur = ctwl_insert_right(random_bi, rnd);
 			}
 			for(i = x2; i < x3; i++) {
+				step = rand() % 10 + 1;
 				rnd = rnd + step;
 				random_bi->cur = ctwl_insert_right(random_bi, rnd);
 			}
 			for(i = x3; i < size; i++) {
+				step = rand() % 10 + 1;
 				rnd = rnd - 1;
 				if((i == size - 1) && (rnd >= start)) {
 					rnd = start - step;
